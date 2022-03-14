@@ -38,8 +38,6 @@ fun main() {
 private fun runHashPerf() {
     val address = "000000000000000000000000f8effd31978f2ceb483f6b1d0eb807461117ecc2" //Address("0xf8EffD31978f2ceb483F6b1d0Eb807461117ECc2")
     val maxRnd = BigInteger("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", 16)
-    val maxRadBitlength = maxRnd.bitLength()
-    val random = ThreadLocalRandom.current()
     val output = CharArray(192)
     val outputBytes = ByteArray(96)
 
@@ -51,7 +49,6 @@ private fun runHashPerf() {
     var encodedDifficulty: String
     var lastHash: BigInteger
     var chainLength = 0
-    var seed = BigInteger.ZERO
     var hashCount: Long
     var timeLimit = System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(30, TimeUnit.MINUTES)
 
@@ -64,8 +61,12 @@ private fun runHashPerf() {
             output[128 + i] = encodedDifficulty[i]
         }
 
+        var seed = BigInteger.ZERO
+
         while (lastHash >= difficulty) {
-            seed = BigInteger(maxRadBitlength, random).mod(maxRnd)
+            seed = seed.subtract(BigInteger.ONE)
+            if (seed.signum() == -1) seed = BigInteger(maxRnd.bitLength(), ThreadLocalRandom.current()).mod(maxRnd)
+
             val encodedSeed = TypeEncoder.encode(Uint(seed))
 
             for (i in encodedSeed.indices) {

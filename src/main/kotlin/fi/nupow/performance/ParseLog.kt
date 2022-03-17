@@ -32,6 +32,7 @@ fun main(args: Array<String>) {
     val totalHashCountHash = mutableListOf<String>()
     val chainLengthHash = mutableListOf<String>()
     val durationHash = mutableListOf<String>()
+    val totalHashCountDuration = mutableListOf<String>()
 
     for (line in file.readLines()) {
         if (line.trim().isBlank()) {
@@ -64,6 +65,10 @@ fun main(args: Array<String>) {
         if (timestamp - startTime > 1000) {
             durationHash.add("" + (timestamp - startTime) + "\t" + hash)
         }
+
+        if (totalHashCount > 1000 && timestamp - startTime > 1000) {
+            totalHashCountDuration.add("" + totalHashCount + "\t" + (timestamp - startTime))
+        }
     }
 
     println("totalHashCountHash ----")
@@ -80,6 +85,12 @@ fun main(args: Array<String>) {
 
     println("durationHash ----")
     for (line in durationHash) {
+        println(line)
+    }
+    println()
+
+    println("totalHashCountDuration ----")
+    for (line in totalHashCountDuration) {
         println(line)
     }
     println()

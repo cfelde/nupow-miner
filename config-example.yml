@@ -1,0 +1,37 @@
+# Crystal contract address for mining
+contractAddress: 0xCHANGE_ME
+
+# Wallet private key (keep private)
+privateKey: 0xCHANGE_ME
+
+# Node URL endpoint
+nodeEndpoint: http://127.0.0.1:8545/
+
+# Chain length mining target, relative to contract chain length target.
+# If the contract target is 37, and maxChainLengthAdjustment is set to -1,
+# then the miner will not try to mine past a chain length of 36.
+maxChainLengthAdjustment: -1
+
+# How many CPU threads to use for mining. If set to less than 1,
+# it will use all available CPU threads automatically.
+threadCount: 0
+
+# How much gas to allocate per transaction. Generally should be below 100k,
+# but setting to 150k to have some margin.
+gasLimit: 150000
+
+# Multiplication factor for gas price. Will take current gas price as
+# reported by eth_gasPrice, and multiply by this factor.
+gasPriceAdjustment: 1.1
+
+# Absolute lower bound for gas price
+minGasPrice: 4100000000
+
+# Absolute upper bound for gas price
+maxGasPrice: 410000000000
+
+# Your preferred miner tag
+tag: NuPoW miner
+
+# If true, the miner will run a performance test at startup, to report hash rates
+preheatMiner: true

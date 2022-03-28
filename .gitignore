@@ -44,3 +44,6 @@ gradle-app.setting
 **/.project
 **/.settings
 **/bin
+
+config.yml
+/logs

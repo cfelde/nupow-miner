@@ -188,7 +188,7 @@ fun main(args: Array<String>) {
                 }
 
                 do {
-                    val sleepTime = max(min(stalledTimestamp - System.currentTimeMillis(), 60 * 1000), 1000)
+                    val sleepTime = max(min(stalledTimestamp - System.currentTimeMillis(), 10 * 1000), 1000)
                     val result = results.poll(sleepTime, TimeUnit.MILLISECONDS)
 
                     if (result != null && result.iteration == iteration && chainLength < maxChainLength) {

@@ -262,11 +262,13 @@ private fun findSeed(
         if (hashCount % 100000L == 0L && (iteration != params.get().iteration || !running.get() || params.get().paused)) break
     }
 
+    val endTime = System.currentTimeMillis()
+
     if (iteration == params.get().iteration && running.get() && !params.get().paused && lastHash < difficulty) {
-        results.offer(MiningResult(seed, iteration))
+        // If we block here, likely due to an ongoing mint transaction, so good to pause a bit
+        results.offer(MiningResult(seed, iteration), 1, TimeUnit.SECONDS)
     }
 
-    val endTime = System.currentTimeMillis()
     val duration = (endTime - startTime) / 1000
     val hashPerSecond = hashCount / if (duration > 0) duration else 1
 

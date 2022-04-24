@@ -30,6 +30,9 @@ minGasPrice: 4100000000
 # Absolute upper bound for gas price
 maxGasPrice: 410000000000
 
+# Abort if current gas price is above max gas price
+abortOnHighGasPrice: true
+
 # Your preferred miner tag
 tag: NuPoW miner
 

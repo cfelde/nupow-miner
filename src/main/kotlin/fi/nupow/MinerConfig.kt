@@ -28,6 +28,7 @@ data class MinerConfig(
     val gasPriceAdjustment: String,
     val minGasPrice: String,
     val maxGasPrice: String,
+    val abortOnHighGasPrice: Boolean,
     val tag: String,
     val preheatMiner: Boolean
 )

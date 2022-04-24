@@ -91,6 +91,7 @@ fun main(args: Array<String>) {
         override fun getGasPrice(): BigInteger {
             val gasPrice = web3j.ethGasPrice().send().gasPrice.toBigDecimal().multiply(gasPriceAdjustment, MathContext.DECIMAL128).toBigInteger().let {
                 if (it < minGasPrice) return@let minGasPrice
+                else if (it > maxGasPrice && config.abortOnHighGasPrice) throw RuntimeException("Current gas price too high at $it > $maxGasPrice")
                 else if (it > maxGasPrice) return@let maxGasPrice
                 return@let it
             }

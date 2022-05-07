@@ -1,3 +1,73 @@
+# Official list of NuPoW crystal tokens available at https://nupow.fi/crystals/ (always confirm there)
+
+# For your convenience, they are also listed here:
+
+# Mainnets
+
+# NuPoW Quartz on Ethereum mainnet at 0x5078dd37ee699eB59c096b41C6415417fA02Ec8c
+#  - target chain length: 37
+#  - max supply: 1 CFELDE
+
+# NuPoW Ruby on Optimism mainnet at 0xD024b2D92872394F43EE99aa0177d5a24E3A6fC2
+#  - target chain length: 37
+#  - max supply: 21 million
+
+# NuPoW Sapphire on Arbitrum mainnet at 0xDdA51a4585545FBF1169393C8F39686B9838C693
+#  - target chain length: 37
+#  - max supply: 21 million
+
+# Testnets
+
+# NuPoW Kovan 1 on Ethereum Kovan at 0x5754046EaD16f75CfB2Cc6FCc91C6Ace118d6f71
+#  - target chain length: 37
+#  - max supply: 1 CFELDE
+
+# NuPoW Kovan 2 on Ethereum Kovan at 0xBC0D8283aF1CadEDbbe6445E292811E7cEb58703
+#  - target chain length: 5
+#  - max supply: 1 CFELDE
+
+# NuPoW Rinkeby 1 on Ethereum Rinkeby at 0xDD917AfF3cB7Df442e45A93E6B33B02caDe150Eb
+#  - target chain length: 37
+#  - max supply: 1 CFELDE
+
+# NuPoW Rinkeby 2 on Ethereum Rinkeby at 0x5754046EaD16f75CfB2Cc6FCc91C6Ace118d6f71
+#  - target chain length: 5
+#  - max supply: 1 CFELDE
+
+# NuPoW Görli 1 on Ethereum Görli at 0x1B471d9440FE8e256B8b3568d55e84AA2811b9fc
+#  - target chain length: 37
+#  - max supply: 1 CFELDE
+
+# NuPoW Görli 2 on Ethereum Görli at 0x714B3d65824CdD9E7Fe9E9cffE427E4Bb821cC7d
+#  - target chain length: 13
+#  - max supply: 21 million
+
+# NuPoW Ropsten 1 on Ethereum Ropsten at 0xDD917AfF3cB7Df442e45A93E6B33B02caDe150Eb
+#  - target chain length: 37
+#  - max supply: 1 CFELDE
+
+# NuPoW Ropsten 2 on Ethereum Ropsten at 0x5754046EaD16f75CfB2Cc6FCc91C6Ace118d6f71
+#  - target chain length: 5
+#  - max supply: 1 CFELDE
+
+# NuPoW Arbitrum Rinkeby 1 on Arbitrum Rinkeby at 0x450bBb17f7FF7ffDea973830d93a5707b6763b51
+#  - target chain length: 37
+#  - max supply: 21 million
+
+# NuPoW Arbitrum Rinkeby 2 on Arbitrum Rinkeby at 0x1dF67daF0c7DEE6dA4BBd90AB8Fa934a291886Eb
+#  - target chain length: 5
+#  - max supply: 21 million
+
+# NuPoW Optimism Kovan 1 on Optimism Kovan at 0xeF7697768fdc972e2B2c1bC01656bacE5d158062
+#  - target chain length: 37
+#  - max supply: 21 million
+
+# NuPoW Optimism Kovan 2 on Optimism Kovan at 0xF9030587Dba580022c72b2F6868ac8a4E0404471
+#  - target chain length: 5
+#  - max supply: 21 million
+
+# -----------------------------------------------------------------------------------------------
+
 # Crystal contract address for mining
 contractAddress: 0xCHANGE_ME
 
@@ -25,10 +95,10 @@ gasLimit: 150000
 gasPriceAdjustment: 1.1
 
 # Absolute lower bound for gas price
-minGasPrice: 4100000000
+minGasPrice: 1
 
 # Absolute upper bound for gas price
-maxGasPrice: 410000000000
+maxGasPrice: 45000000000
 
 # Abort if current gas price is above max gas price
 abortOnHighGasPrice: true

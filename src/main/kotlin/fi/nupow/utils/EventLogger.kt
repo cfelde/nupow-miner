@@ -16,8 +16,11 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package fi.nupow
+@file:JvmName("EventLogger")
 
+package fi.nupow.utils
+
+import fi.nupow.MinerConfig
 import fi.nupow.contract.NuPoW
 import com.sksamuel.hoplite.ConfigLoader
 import org.slf4j.LoggerFactory

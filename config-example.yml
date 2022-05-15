@@ -71,6 +71,11 @@
 # Crystal contract address for mining
 contractAddress: 0xCHANGE_ME
 
+# You can optionally use a mintAddress pointing to a contract that minting
+# will be delegated to. This is useful if you want to move tokens after minting
+# or keep them on a different address than the miner wallet.
+# mintAddress: 0xCHANGE_ME
+
 # Wallet private key (keep private)
 privateKey: 0xCHANGE_ME
 

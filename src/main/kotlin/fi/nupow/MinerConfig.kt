@@ -20,6 +20,7 @@ package fi.nupow
 
 data class MinerConfig(
     val contractAddress: String,
+    val mintAddress: String?,
     val privateKey: String,
     val nodeEndpoint: String,
     val maxChainLengthAdjustment: Int,

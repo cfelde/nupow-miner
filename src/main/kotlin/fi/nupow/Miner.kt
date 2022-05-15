@@ -64,6 +64,7 @@ fun main(args: Array<String>) {
     val maxChainLengthAdjustment = config.maxChainLengthAdjustment
     val threadCount = if (config.threadCount <= 0) Runtime.getRuntime().availableProcessors() else config.threadCount
     val contractAddress = config.contractAddress
+    val mintAddress = config.mintAddress ?: contractAddress
     val web3j = Web3j.build(HttpService(config.nodeEndpoint))
     val credentials = Credentials.create(config.privateKey)
     val gasPriceAdjustment = BigDecimal(config.gasPriceAdjustment)
@@ -101,11 +102,12 @@ fun main(args: Array<String>) {
     }
 
     val nupow = NuPoW.load(contractAddress, web3j, transactionManager, gasProvider)
+    val nupowMint = NuPoW.load(mintAddress, web3j, transactionManager, gasProvider)
 
     val running = AtomicBoolean(true)
     val results = LinkedBlockingQueue<MiningResult>(threadCount * 2)
     val maxRnd = BigInteger("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", 16)
-    val params = AtomicReference(MiningParams(credentials.address, BigInteger.ZERO, Long.MIN_VALUE, !config.preheatMiner))
+    val params = AtomicReference(MiningParams(config.mintAddress ?: credentials.address, BigInteger.ZERO, Long.MIN_VALUE, !config.preheatMiner))
 
     var iteration: Long = Long.MIN_VALUE
 
@@ -116,6 +118,9 @@ fun main(args: Array<String>) {
     LOGGER.info("Using ${config.gasPriceAdjustment} as gas price adjustment factor, with ${config.minGasPrice} as min gas price and ${config.maxGasPrice} as max gas price")
 
     LOGGER.info("Crystal contract address: ${nupow.contractAddress}")
+    if (nupow.contractAddress != nupowMint.contractAddress) {
+        LOGGER.info("Separate contract mint address: ${nupowMint.contractAddress}")
+    }
     LOGGER.info("Crystal contract name: ${nupow.name().send()}")
     LOGGER.info("Crystal contract symbol: ${nupow.symbol().send()}")
     val decimals = nupow.decimals().send()
@@ -157,9 +162,9 @@ fun main(args: Array<String>) {
         if (config.preheatMiner) {
             LOGGER.info("Warming miner threads..")
             Thread.sleep(20000)
-            params.set(MiningParams(credentials.address, BigInteger.ZERO, ++iteration, false))
+            params.set(MiningParams(config.mintAddress ?: credentials.address, BigInteger.ZERO, ++iteration, false))
             Thread.sleep(20000)
-            params.set(MiningParams(credentials.address, BigInteger.ZERO, ++iteration, true))
+            params.set(MiningParams(config.mintAddress ?: credentials.address, BigInteger.ZERO, ++iteration, true))
             LOGGER.info("Miner threads warm..")
             Thread.sleep(20000)
         } else {
@@ -171,7 +176,7 @@ fun main(args: Array<String>) {
             if (stalledTimestamp <= System.currentTimeMillis()) {
                 // Stalled, try to mint
                 LOGGER.info("Stalled, trying to mint..")
-                nupow.mint(BigInteger(maxRnd.bitLength(), ThreadLocalRandom.current()).mod(maxRnd), tag).send()
+                nupowMint.mint(BigInteger(maxRnd.bitLength(), ThreadLocalRandom.current()).mod(maxRnd), tag).send()
                 nupow.balanceOf(credentials.address).send().let {
                     LOGGER.info("Miner Crystal balance: ${it.toBigDecimal().divide(BigDecimal.TEN.pow(decimals.toInt())).toPlainString()}")
                 }
@@ -179,7 +184,7 @@ fun main(args: Array<String>) {
                 val difficulty = Numeric.toBigInt(nupow.lastHash().send())
                 val chainLength = nupow.chainLength().send().toLong()
                 if (difficulty != params.get().difficulty) {
-                    params.set(MiningParams(credentials.address, difficulty, ++iteration, chainLength >= maxChainLength))
+                    params.set(MiningParams(config.mintAddress ?: credentials.address, difficulty, ++iteration, chainLength >= maxChainLength))
                     LOGGER.info("Will stall at " + Instant.ofEpochMilli(stalledTimestamp).atZone(ZoneId.systemDefault()).toLocalDateTime())
                     val nextMint = nupow.nextMint().send()
                     LOGGER.info("Next mint: 0x${nextMint.toString(16)} (${nextMint.toBigDecimal().divide(BigDecimal.TEN.pow(decimals.toInt())).toPlainString()})")
@@ -194,7 +199,7 @@ fun main(args: Array<String>) {
 
                     if (result != null && result.iteration == iteration && chainLength < maxChainLength) {
                         LOGGER.info("Found new seed, minting with 0x${result.seed.toString(16)} !")
-                        nupow.mint(result.seed, tag).send()
+                        nupowMint.mint(result.seed, tag).send()
                         nupow.balanceOf(credentials.address).send().let {
                             LOGGER.info("Miner Crystal balance: ${it.toBigDecimal().divide(BigDecimal.TEN.pow(decimals.toInt())).toPlainString()}")
                         }
